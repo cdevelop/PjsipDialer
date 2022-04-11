@@ -17,6 +17,7 @@ namespace PjsipDialer
         /// </summary>
         public bool IsActive { get { return isActive; } }
         private bool isActive = false;
+        private string status;
 
         /// <summary>
         /// Код состояния аккаунта
@@ -84,14 +85,16 @@ namespace PjsipDialer
             config.regConfig.registrarUri = string.Format("sip:{0}", Host);
             config.sipConfig.authCreds.Add(new AuthCredInfo("digest", "*", UserName, 0, Password));
 
+
+
             if (newAcc) create(config);
             else modify(config);
         }
 
         public override string ToString()
         {
-            if (config == null) return "Не инициализирован";
-            return string.Format("{0} - {1}", config.idUri, isActive ? "Активный" : "Не активный");
+            if (config == null) return "请先添加账户";
+            return string.Format("{0} - {1} [{2}]", config.idUri, isActive ? "注册" : "未注册", status);
         }
 
         public PjsipAccount()
@@ -129,6 +132,7 @@ namespace PjsipDialer
         {
             AccountInfo ai = getInfo();
             isActive = ai.regIsActive;
+            status = ai.regStatusText;
             code = prm.code;
             if (onAccountRegState != null) onAccountRegState(this);
         }

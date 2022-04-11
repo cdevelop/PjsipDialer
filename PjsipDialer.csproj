@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>PjsipDialer</RootNamespace>
     <AssemblyName>PjsipDialer</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
@@ -101,11 +101,14 @@
     <Compile Include="Classes\CodecInfo.cs" />
     <Compile Include="Classes\CodecInfoVector.cs" />
     <Compile Include="Classes\CodecInfoVector2.cs" />
+    <Compile Include="Classes\CodecOpusConfig.cs" />
     <Compile Include="Classes\CodecParam.cs" />
     <Compile Include="Classes\CodecParamInfo.cs" />
     <Compile Include="Classes\CodecParamSetting.cs" />
     <Compile Include="Classes\ConfPortInfo.cs" />
     <Compile Include="Classes\ContainerNode.cs" />
+    <Compile Include="Classes\DigestChallenge.cs" />
+    <Compile Include="Classes\DigestCredential.cs" />
     <Compile Include="Classes\Endpoint.cs" />
     <Compile Include="Classes\EpConfig.cs" />
     <Compile Include="Classes\Error.cs" />
@@ -150,7 +153,9 @@
     <Compile Include="Classes\OnCallTxOfferParam.cs" />
     <Compile Include="Classes\OnCreateMediaTransportParam.cs" />
     <Compile Include="Classes\OnCreateMediaTransportSrtpParam.cs" />
+    <Compile Include="Classes\OnCredAuthParam.cs" />
     <Compile Include="Classes\OnDtmfDigitParam.cs" />
+    <Compile Include="Classes\OnDtmfEventParam.cs" />
     <Compile Include="Classes\OnIncomingCallParam.cs" />
     <Compile Include="Classes\OnIncomingSubscribeParam.cs" />
     <Compile Include="Classes\OnInstantMessageParam.cs" />
@@ -165,6 +170,7 @@
     <Compile Include="Classes\OnSelectAccountParam.cs" />
     <Compile Include="Classes\OnStreamCreatedParam.cs" />
     <Compile Include="Classes\OnStreamDestroyedParam.cs" />
+    <Compile Include="Classes\OnStreamPreCreateParam.cs" />
     <Compile Include="Classes\OnTimerParam.cs" />
     <Compile Include="Classes\OnTransportStateParam.cs" />
     <Compile Include="Classes\OnTypingIndicationParam.cs" />
@@ -172,7 +178,6 @@
     <Compile Include="Classes\PersistentDocument.cs" />
     <Compile Include="Classes\PersistentObject.cs" />
     <Compile Include="Classes\pjmedia_aud_dev_cap.cs" />
-    <Compile Include="Classes\pjmedia_aud_dev_id.cs" />
     <Compile Include="Classes\pjmedia_aud_dev_route.cs" />
     <Compile Include="Classes\pjmedia_dir.cs" />
     <Compile Include="Classes\pjmedia_echo_flag.cs" />
@@ -191,6 +196,7 @@
     <Compile Include="Classes\pjmedia_tp_proto.cs" />
     <Compile Include="Classes\pjmedia_type.cs" />
     <Compile Include="Classes\pjmedia_vid_dev_cap.cs" />
+    <Compile Include="Classes\pjmedia_vid_dev_fullscreen_flag.cs" />
     <Compile Include="Classes\pjmedia_vid_dev_std_index.cs" />
     <Compile Include="Classes\pjmedia_vid_packing.cs" />
     <Compile Include="Classes\pjmedia_vid_stream_rc_method.cs" />
@@ -233,6 +239,7 @@
     <Compile Include="Classes\pjsua_vid_req_keyframe_method.cs" />
     <Compile Include="Classes\pj_constants_.cs" />
     <Compile Include="Classes\pj_file_access.cs" />
+    <Compile Include="Classes\pj_ice_sess_trickle.cs" />
     <Compile Include="Classes\pj_log_decoration.cs" />
     <Compile Include="Classes\pj_qos_flag.cs" />
     <Compile Include="Classes\pj_qos_params.cs" />
@@ -276,7 +283,9 @@
     <Compile Include="Classes\SslCertNameVector.cs" />
     <Compile Include="Classes\StreamInfo.cs" />
     <Compile Include="Classes\StreamStat.cs" />
+    <Compile Include="Classes\StringToStringMap.cs" />
     <Compile Include="Classes\StringVector.cs" />
+    <Compile Include="Classes\SWIGTYPE_p_pjmedia_jb_discard_algo.cs" />
     <Compile Include="Classes\SWIGTYPE_p_pjmedia_vid_dev_hwnd_type.cs" />
     <Compile Include="Classes\SWIGTYPE_p_p_void.cs" />
     <Compile Include="Classes\SWIGTYPE_p_unsigned_char.cs" />

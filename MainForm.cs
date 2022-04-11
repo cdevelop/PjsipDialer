@@ -16,7 +16,6 @@ namespace PjsipDialer
     public partial class MainForm : Form
     {
         public static Endpoint ep;
-        private Account defaultAcc;
         private PjsipAccount checkedAccount = null;
         private PjsipCall currentCall = null;
         private const string cfgFileName = "pjsipdialer.xml";
@@ -39,19 +38,24 @@ namespace PjsipDialer
                 TransportConfig tcfg = new TransportConfig();
                 tcfg.port = 5080;
                 ep.transportCreate(pjsip_transport_type_e.PJSIP_TRANSPORT_UDP, tcfg);
-                ep.transportCreate(pjsip_transport_type_e.PJSIP_TRANSPORT_TCP, tcfg);
 
                 ep.libStart();
 
-                AccountConfig accCfg = new AccountConfig();
-                accCfg.idUri = "sip:default@pjsip.org";
 
-                defaultAcc = new Account();
-                defaultAcc.create(accCfg, true);
+                CodecInfoVector2 codecname= ep.codecEnum2();
+
+                ep.codecSetPriority("L16/44100/2", 0);//0：关闭编码
+
+                ep.audDevManager().setEcOptions(128, 0); //设置回音消除
+
+                ep.audDevManager().getPlaybackDevMedia().adjustRxLevel(1);// 调整接收(喇叭) 音量 0静音 1原始声音 2放大1倍数。
+                ep.audDevManager().getCaptureDevMedia().adjustTxLevel(1);// 调整发送（麦克风）
+
+
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Ошибка инициализации PJSIP\r\n{0}", ex.Message));
+                MessageBox.Show(string.Format("初始化失败 PJSIP\r\n{0}", ex.Message));
                 this.Close();
             }
         }
@@ -63,8 +67,6 @@ namespace PjsipDialer
         {
             try
             {
-                defaultAcc.shutdown();
-                defaultAcc.Dispose();
                 PjsipAccount[] accounts = GetAccounts();
                 foreach (PjsipAccount acc in accounts)
                 {
@@ -137,7 +139,7 @@ namespace PjsipDialer
         private void AccDel()
         {
             PjsipAccount acc = lbAccounts.SelectedItem as PjsipAccount;
-            if (acc != null && MessageBox.Show(this, string.Format("Аккаунт {0} будет удален, Вы уверены?", acc), "Удаление аккаунта", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (acc != null && MessageBox.Show(this, string.Format("你确定要删除 {0} 吗?", acc), "提示", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 lbAccounts.Items.Remove(acc);
                 acc.Dispose();
@@ -203,7 +205,7 @@ namespace PjsipDialer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Ошибка записи файла конфигурации\r\n{0}", ex.Message));
+                MessageBox.Show(string.Format("保存账户失败\r\n{0}", ex.Message));
             }
         }
 
@@ -233,7 +235,7 @@ namespace PjsipDialer
             }
             catch (Exception ex)
             {
-                MessageBox.Show(string.Format("Ошибка чтения файла конфигурации\r\n{0}", ex.Message));
+                MessageBox.Show(string.Format("载入配置失败\r\n{0}", ex.Message));
             }
         }
 
@@ -310,6 +312,7 @@ namespace PjsipDialer
                 string destUri = string.Format("sip:{0}@{1}", tbNumber.Text.Trim(), checkedAccount.Host);
                 currentCall.makeCall(destUri, prm);
                 currentCall.OnCallDisconnected = CallDisconnect;
+                currentCall.OnCallStatusText = CallStatusTextInfo;
                 SetCallButtonState(CallButtonState.Hungup);
             }
             catch
@@ -342,15 +345,16 @@ namespace PjsipDialer
         /// Обработка разрыва соединения
         /// </summary>
         /// <param name="call"></param>
-        private void CallDisconnect(PjsipCall call)
+        private void CallDisconnect(PjsipCall call,bool remote_hangup)
         {
             if (InvokeRequired)
             {
                 CallDisconnected cd = new CallDisconnected(CallDisconnect);
-                Invoke(cd, new object[] { call });
+                Invoke(cd, new object[] { call, remote_hangup });
             }
             else
             {
+                callinfo.Text = remote_hangup ? "remote_hangup" : "local_hangup";
                 currentCall.Dispose();
                 currentCall = null;
                 SetCallButtonState(string.IsNullOrWhiteSpace(tbNumber.Text) ?
@@ -392,6 +396,7 @@ namespace PjsipDialer
                         currentCall = call;
                         currentCall.OnCallIncoming = CallIncomingInfo;
                         currentCall.OnCallDisconnected = CallDisconnect;
+                        currentCall.OnCallStatusText = CallStatusTextInfo;
                         SetCallButtonState(CallButtonState.Ring);
                         ring = new PjsipRing();
                     }
@@ -417,6 +422,23 @@ namespace PjsipDialer
             else
             {
                 tbNumber.Text = NormalizeNumber(remoteUri);
+            }
+        }
+
+        /// <summary>
+        /// Обработка определения номера входящего вызова
+        /// </summary>
+        /// <param name="statusText"></param>
+        private void CallStatusTextInfo(string statusText)
+        {
+            if (InvokeRequired)
+            {
+                CallStatusText ic = new CallStatusText(CallStatusTextInfo);
+                Invoke(ic, new object[] { statusText });
+            }
+            else
+            {
+                callinfo.Text = statusText;
             }
         }
 
