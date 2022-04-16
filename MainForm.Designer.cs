@@ -39,6 +39,7 @@
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btAccAdd = new System.Windows.Forms.ToolStripButton();
             this.pNumPad = new System.Windows.Forms.Panel();
+            this.btPlay = new System.Windows.Forms.Button();
             this.callinfo = new System.Windows.Forms.Label();
             this.btBack = new System.Windows.Forms.Button();
             this.btCall = new System.Windows.Forms.Button();
@@ -66,6 +67,7 @@
             this.tbNumber = new System.Windows.Forms.TextBox();
             this.lbCheckedAccount = new System.Windows.Forms.Label();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.gbAccounts.SuspendLayout();
             this.contextMenu.SuspendLayout();
             this.toolStrip.SuspendLayout();
@@ -156,6 +158,7 @@
             // 
             // pNumPad
             // 
+            this.pNumPad.Controls.Add(this.btPlay);
             this.pNumPad.Controls.Add(this.callinfo);
             this.pNumPad.Controls.Add(this.btBack);
             this.pNumPad.Controls.Add(this.btCall);
@@ -188,6 +191,16 @@
             this.pNumPad.Name = "pNumPad";
             this.pNumPad.Size = new System.Drawing.Size(434, 617);
             this.pNumPad.TabIndex = 3;
+            // 
+            // btPlay
+            // 
+            this.btPlay.Location = new System.Drawing.Point(24, 508);
+            this.btPlay.Name = "btPlay";
+            this.btPlay.Size = new System.Drawing.Size(120, 48);
+            this.btPlay.TabIndex = 26;
+            this.btPlay.Text = "play";
+            this.btPlay.UseVisualStyleBackColor = true;
+            this.btPlay.Click += new System.EventHandler(this.btPlay_Click);
             // 
             // callinfo
             // 
@@ -503,6 +516,9 @@
             this.imageList.Images.SetKeyName(1, "call.png");
             this.imageList.Images.SetKeyName(2, "hungup.png");
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // MainForm
             // 
@@ -574,6 +590,8 @@
         private System.Windows.Forms.ToolStripMenuItem miEdit;
         private System.Windows.Forms.ToolStripMenuItem miDelete;
         private System.Windows.Forms.Label callinfo;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button btPlay;
     }
 }
 

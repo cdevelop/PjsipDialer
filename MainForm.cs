@@ -51,6 +51,20 @@ namespace PjsipDialer
                 ep.audDevManager().getPlaybackDevMedia().adjustRxLevel(1);// 调整接收(喇叭) 音量 0静音 1原始声音 2放大1倍数。
                 ep.audDevManager().getCaptureDevMedia().adjustTxLevel(1);// 调整发送（麦克风）
 
+                AudioDevInfoVector2 dev = ep.audDevManager().enumDev2();
+                AudioDevInfo test = dev[0];
+
+                int testid = ep.audDevManager().lookupDev(test.driver, test.name); //查找设备ID
+
+                int capid =  ep.audDevManager().getCaptureDev();//获取麦克风编号
+                int playid = ep.audDevManager().getPlaybackDev();//获取喇叭编号
+
+                AudioDevInfo capinfo = ep.audDevManager().getDevInfo(capid);
+                AudioDevInfo playinfo = ep.audDevManager().getDevInfo(playid);
+
+
+                ep.audDevManager().setCaptureDev(-1); //设置录音设备 -1默认
+                ep.audDevManager().setPlaybackDev(-2);//设置放音设备 -2 默认
 
             }
             catch (Exception ex)
@@ -399,6 +413,10 @@ namespace PjsipDialer
                         currentCall.OnCallStatusText = CallStatusTextInfo;
                         SetCallButtonState(CallButtonState.Ring);
                         ring = new PjsipRing();
+                        timer1.Enabled = true;
+                        timer1.Interval = 10;
+                        timer1.Start();
+
                     }
                 }
                 catch
@@ -606,6 +624,22 @@ namespace PjsipDialer
             if (currentState == CallButtonState.Call) MakeCall();
             else if (currentState == CallButtonState.Hungup) Hungup();
             else if (currentState == CallButtonState.Ring) Answer();
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Enabled = false;
+            timer1.Stop();
+            Answer();
+
+        }
+
+        private void btPlay_Click(object sender, EventArgs e)
+        {
+            if (currentCall != null)
+            {
+                currentCall.playfile("C:\\Users\\ai\\Desktop\\20220224.wav");
+            }
         }
     }
 }

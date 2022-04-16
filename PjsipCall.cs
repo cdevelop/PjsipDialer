@@ -26,7 +26,7 @@ namespace PjsipDialer
 
 
         private AudioMediaRecorder recorder = null;
-
+        private AudioMediaPlayer player = null;
         public PjsipCall(PjsipAccount acc, int call_id = -1)
             : base(acc, call_id)
         {
@@ -108,6 +108,37 @@ namespace PjsipDialer
                 cap_aud_med.startTransmit(recorder);
                 aud_med.startTransmit(recorder);
             }
+
+
+
+
+        }
+
+
+
+        /// <summary>
+        /// 放音
+        /// </summary>
+        /// <param name="prm"></param>
+        public void playfile(String file)
+        {
+            AudioMedia aud_med;
+
+            try
+            {
+                aud_med = getAudioMedia(-1);
+
+                AudDevManager mgr = Endpoint.instance().audDevManager();
+
+                AudioMedia play_dev_med = mgr.getPlaybackDevMedia();
+
+                player = new AudioMediaPlayer();
+                player.createPlayer(file, 1);
+                player.startTransmit(play_dev_med);
+                player.startTransmit(aud_med);
+            }
+            catch { return; }
+
 
         }
     }
