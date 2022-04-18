@@ -84,7 +84,7 @@ namespace PjsipDialer
             config.idUri = string.Format("sip:{0}@{1}", UserName, Host);
             config.regConfig.registrarUri = string.Format("sip:{0}", Host);
             config.sipConfig.authCreds.Add(new AuthCredInfo("digest", "*", UserName, 0, Password));
-
+            config.regConfig.timeoutSec = 60;
 
 
             if (newAcc) create(config);

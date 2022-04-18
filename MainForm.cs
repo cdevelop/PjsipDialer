@@ -33,6 +33,7 @@ namespace PjsipDialer
                 ep.libCreate();
 
                 EpConfig epConfig = new EpConfig();
+                epConfig.logConfig.filename = "sip.log";
                 ep.libInit(epConfig);
 
                 TransportConfig tcfg = new TransportConfig();

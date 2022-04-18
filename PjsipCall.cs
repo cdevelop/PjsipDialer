@@ -59,6 +59,11 @@ namespace PjsipDialer
                     recorder.Dispose();
                 }
 
+                if (player != null)
+                {
+                    player.Dispose();
+                }
+
                 bool remote_hangup = false;
                 if (prm.e.type == pjsip_event_id_e.PJSIP_EVENT_TSX_STATE)
                 {
