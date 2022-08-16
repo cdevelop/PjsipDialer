@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 namespace PjsipDialer
 {
     public delegate void AccountRegState(PjsipAccount acc);
-    public delegate void AccountIncomingCall(PjsipAccount acc, PjsipCall call, int callId);
+    public delegate void AccountIncomingCall(PjsipAccount acc, PjsipCall call, int callId, CallInfo info);
 
     public class PjsipAccount : Account
     {
@@ -85,7 +85,7 @@ namespace PjsipDialer
             config.regConfig.registrarUri = string.Format("sip:{0}", Host);
             config.sipConfig.authCreds.Add(new AuthCredInfo("digest", "*", UserName, 0, Password));
             config.regConfig.timeoutSec = 60;
-
+            config.natConfig.contactRewriteUse = 0;
 
             if (newAcc) create(config);
             else modify(config);
@@ -121,7 +121,10 @@ namespace PjsipDialer
             PjsipCall call = new PjsipCall(this, prm.callId);
             call.answer(cprm);
 
-            if (onAccountIncomingCall != null) onAccountIncomingCall(this, call, prm.callId);
+            CallInfo info = call.getInfo();
+
+
+            if (onAccountIncomingCall != null) onAccountIncomingCall(this, call, prm.callId, info);
         }
 
         /// <summary>

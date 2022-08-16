@@ -44,6 +44,7 @@ namespace PjsipDialer
 
 
                 CodecInfoVector2 codecname= ep.codecEnum2();
+                string name = codecname[0].codecId;
 
                 ep.codecSetPriority("L16/44100/2", 0);//0：关闭编码
 
@@ -387,17 +388,19 @@ namespace PjsipDialer
         /// </summary>
         /// <param name="acc"></param>
         /// <param name="callId"></param>
-        private void IncomingCall(PjsipAccount acc, PjsipCall call, int callId)
+        private void IncomingCall(PjsipAccount acc, PjsipCall call, int callId, CallInfo info)
         {
             if (InvokeRequired)
             {
                 AccountIncomingCall ic = new AccountIncomingCall(IncomingCall);
-                Invoke(ic, new object[] { acc, call, callId });
+                Invoke(ic, new object[] { acc, call, callId,info });
             }
             else
             {
                 try
                 {
+  
+
                     if (currentCall != null && currentCall.IsOnline)
                     {
                         CallOpParam prm = new CallOpParam();
@@ -631,7 +634,7 @@ namespace PjsipDialer
         {
             timer1.Enabled = false;
             timer1.Stop();
-            Answer();
+            Hungup();
 
         }
 
