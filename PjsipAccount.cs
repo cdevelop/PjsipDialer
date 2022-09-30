@@ -86,6 +86,7 @@ namespace PjsipDialer
             config.sipConfig.authCreds.Add(new AuthCredInfo("digest", "*", UserName, 0, Password));
             config.regConfig.timeoutSec = 60;
             config.natConfig.contactRewriteUse = 0;
+            config.natConfig.viaRewriteUse = 0;
 
             if (newAcc) create(config);
             else modify(config);

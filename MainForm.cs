@@ -417,9 +417,13 @@ namespace PjsipDialer
                         currentCall.OnCallStatusText = CallStatusTextInfo;
                         SetCallButtonState(CallButtonState.Ring);
                         ring = new PjsipRing();
+
+                        /*
+                         *测试自动挂断
                         timer1.Enabled = true;
                         timer1.Interval = 10;
                         timer1.Start();
+                        */
 
                     }
                 }
